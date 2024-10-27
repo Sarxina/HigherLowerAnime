@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AnimeCard from './AnimeCard';
+import StateBox from './StateBox';
 
 const Game = () => {
   // Move state variables inside the component
@@ -56,64 +57,69 @@ const Game = () => {
     </div>
   );
 
+  const getTitle = (anime) => {
+    if (anime.title_english) return anime.title_english
+    else if (anime.title) return anime.title
+    else return 'Could Not Find Title :('
+  }
+
   const renderGame = () => (
-    <div>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'relative'
+    }}>
+      {/* The container for the two sides */}
       <div style={{
-        width: '100vw',
-        height: '100vh',
-        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'row',
         position: 'absolute'
       }}>
-        <div style={{ display: 'flex',
-                      flexDirection: 'row',
-                      width: '100vw',
-                      height: '100vw' }}>
-          {/* Left side: Current Anime */}
+        {/* left side */}
+        <div>
+          <AnimeCard
+            rank={currentAnime.rank}
+            image={currentAnime.images.webp.large_image_url}
+            title={getTitle(currentAnime)}/>
+        </div>
+        {/* right side */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          position : 'relative',
+          height : '100%',
+        }}>
           <div>
-            <AnimeCard rank={currentAnime.rank}
-                      image={currentAnime.images.webp.large_image_url}
-                      title={currentAnime.title_english} />
+            <AnimeCard
+              rank={'???'}
+              image={nextAnime.images.webp.large_image_url}
+              title={getTitle(nextAnime)}/>
           </div>
-          {/* Right side: Next Anime */}
           <div style={{
-            display : 'flex',
-            flexDirection : 'column-reverse',
-            alignItems : 'column-reverse',
+            position : 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            height: '33%',
+            width: '100%',
+            justifyContent: 'center',
+            padding: '0 5%',
+            boxSizing: 'border-box'
           }}>
-            <div style={{position : 'absolute'}}>
-              <AnimeCard rank={'???'}
-                        image={nextAnime.images.webp.large_image_url}
-                        title={nextAnime.title_english} />
-            </div>
-            <div style={{
-              position: 'absolute',
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              flexBasis: '33.33%',
-            }}>
-              <button onClick={() => handleGuess('higher')}>Higher</button>
-              <button onClick={() => handleGuess('lower')}>Lower</button>
-            </div>
+            <button style={{ flex: '1', margin: '10px', fontSize: '88px'}} onClick={() => handleGuess('higher')}>Higher</button>
+            <button style={{ flex: '1', margin: '10px', fontSize: '32px'}} onClick={() => handleGuess('lower')}>Lower</button>
           </div>
         </div>
       </div>
-      {/* Div for things on top of game (score, buttons, difficulty) */}
-      {/* <div style={{
-        height: '100vw',
-        width: '100vw',
-        display : 'flex',
-        flexDirection : 'column-reverse',
-        alignItems : 'flex-end',
-        position: 'absolute'
+      <div style={{
+        position: 'absolute',
+        display: 'flex',
+        alignItems : 'center',
+        justifyContent : 'center',
+        width : '100%'
       }}>
-        <div style={{
-
-        }}>
-          <button onClick={() => handleGuess('higher')}>Higher</button>
-          <button onClick={() => handleGuess('lower')}>Lower</button>
-        </div>
-      </div> */}
+        <StateBox currentDifficulty={difficulty} setDifficulty={setDifficulty} score={score} />
+      </div>
     </div>
   );
 
@@ -136,6 +142,5 @@ export default Game;
 <p>
   Is "{nextAnime.title_english}" ranked higher or lower than "{currentAnime.title_english}"?
 </p>
-<button onClick={() => handleGuess('higher')}>Higher</button>
-<button onClick={() => handleGuess('lower')}>Lower</button>
+
 </div> */}
