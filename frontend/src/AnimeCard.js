@@ -33,7 +33,6 @@ const AnimeCard = ({rank, title, image}) => {
                 textAlign: 'center',
                 display: 'flex',
                 flexDirection: 'column',
-                //alignItems: 'center',
                 width: '80%'
             }}>
               <h1 style={{color: 'white',

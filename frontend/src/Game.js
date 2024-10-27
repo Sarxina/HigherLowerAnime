@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AnimeCard from './AnimeCard';
 import StateBox from './StateBox';
+import GameOverScreen from './GameOverScreen';
 
 const Game = () => {
   // Move state variables inside the component
@@ -49,18 +50,27 @@ const Game = () => {
     }
   };
 
-  const renderGameOver = () => (
-    <div>
-      <h2>Game Over!</h2>
-      <p>Your final score is {score}.</p>
-      {/* TODO: Add button to restart the game */}
-    </div>
-  );
-
   const getTitle = (anime) => {
     if (anime.title_english) return anime.title_english
     else if (anime.title) return anime.title
     else return 'Could Not Find Title :('
+  }
+
+  const renderGameOver = () => {
+    return (
+      <div style={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        alignContent: 'center'
+      }}>
+        <GameOverScreen
+        gameOver={gameOver}
+        setGameOver={setGameOver}
+        score={score}
+        setScore={setScore}/>
+      </div>
+    )
   }
 
   const renderGame = () => (
@@ -126,11 +136,15 @@ const Game = () => {
   // Single return statement at the end
   return (
     <div>
+      <div>
+        { !currentAnime || !nextAnime
+          ? <div>Loading...</div>
+          : renderGame()}
+      </div>
       {gameOver
-        ? renderGameOver()
-        : !currentAnime || !nextAnime
-        ? <div>Loading...</div>
-        : renderGame()}
+      ? renderGameOver()
+      : null
+     }
     </div>
   );
 };
