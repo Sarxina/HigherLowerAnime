@@ -25,13 +25,18 @@ const Game = () => {
     }
   };
 
+  const startGame = async () => {
+    setCurrentAnime(null)
+    setNextAnime(null)
+    const firstAnime = await fetchAnime();
+    const secondAnime = await fetchAnime();
+    setCurrentAnime(firstAnime);
+    setNextAnime(secondAnime);
+    setScore(0);
+    setGameOver(false)
+  }
+
   useEffect(() => {
-    const startGame = async () => {
-      const firstAnime = await fetchAnime();
-      const secondAnime = await fetchAnime();
-      setCurrentAnime(firstAnime);
-      setNextAnime(secondAnime);
-    };
     startGame();
   }, []);
 
@@ -68,7 +73,8 @@ const Game = () => {
         gameOver={gameOver}
         setGameOver={setGameOver}
         score={score}
-        setScore={setScore}/>
+        setScore={setScore}
+        startGame={startGame}/>
       </div>
     )
   }

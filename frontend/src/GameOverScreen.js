@@ -1,11 +1,6 @@
 import React from 'react';
 
-const restartGame = (setGameOver, setScore) => {
-    setScore(0);
-    setGameOver(false)
-}
-
-const GameOverScreen = ({gameOver, setGameOver, score, setScore}) => {
+const GameOverScreen = ({gameOver, setGameOver, score, setScore, startGame}) => {
     return (
         <div style={{
             backgroundColor: 'rgba(0, 0, 0, 0.5)', /* Dark overlay */
@@ -13,7 +8,7 @@ const GameOverScreen = ({gameOver, setGameOver, score, setScore}) => {
         }}>
             <h2>Game Over!</h2>
             <p>Your final score is {score}</p>
-            <button onClick={() => restartGame(setGameOver, setScore)}>Retry</button>
+            <button onClick={startGame}>Retry</button>
         </div>
     );
 }
